@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="w-screen h-screen">
       <header class="shadow-sm bg-white">
         <nav class="container mx-auto p-4">
           <NuxtLink to ="/board" class="font-bold">Board</NuxtLink>
         </nav>
       </header>
-      <div class="container mx-auto p-4">
+      <div class=" mx-auto p-4 w-11/12 h-3/4">
         <slot />
     </div>
     <footer class="container mx-auto p-4 flex justify-between border-t-2">

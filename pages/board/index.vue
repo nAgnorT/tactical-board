@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <svg width="1437" height="935" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="w-full h-full">
+        <Boards/>
     </div>
 </template>
 <script setup>
