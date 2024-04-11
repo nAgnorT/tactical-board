@@ -1,3 +1,4 @@
+import interact from "interactjs"  
 export default (name) => {
     const classUse = '.'+name+''
     return interact(classUse)

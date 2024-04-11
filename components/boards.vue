@@ -11,7 +11,7 @@ import * as d3 from "d3";
 import { onMounted } from "vue";
 import d3Utils from "~/plugin/d3Utils";
 import interactDrag from "~/plugin/d3Utils/drawing/interactDrag";
-  
+import interact from "interactjs"  
   export default {
     name: 'Boards',
     setup() {
