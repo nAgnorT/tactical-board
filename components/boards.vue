@@ -32,12 +32,11 @@ import d3Utils from "~/plugin/d3Utils";
   </script>
   <style>
     rect{
-        fill:none;
+      fill: none;
         stroke: black;
         stroke-width: "2px";
     }
     line, circle{
-      fill:none;
       stroke: black;
       stroke-width: "2px";
     }
