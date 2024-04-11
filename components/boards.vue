@@ -10,6 +10,7 @@
 import * as d3 from "d3";
 import { onMounted } from "vue";
 import d3Utils from "~/plugin/d3Utils";
+import interactDrag from "~/plugin/d3Utils/drawing/interactDrag";
   
   export default {
     name: 'Boards',
@@ -25,6 +26,7 @@ import d3Utils from "~/plugin/d3Utils";
         d3Utils(svg, inputWidth,inputHeight,playerData)
       }
       window.addEventListener("resize", resize);
+      interactDrag('player')
       resize()
     });
   },
