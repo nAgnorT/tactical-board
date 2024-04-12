@@ -3,9 +3,10 @@ import { isVertical,isHorizontal } from "./checking/checkPitch"
 import isMobile from "./checking/isMobile"
 import { loadHorizontalPitch,loadVerticalPitch } from "./drawing/pitchDrawing"
 import { loadPlayerData, playerDraw } from "./drawing/playerDrawing"
-export default (svg, inputWidth, inputHeight, playerData)=> {
+import { loadLineData,drawLine } from "./drawing/lineDrawing"
+export default (svg, inputWidth, inputHeight, playerData,lineData, menu)=> {
     let svgSize
-    let lineData =[]
+
     let svgWidth= 1,svgHeight= 1
     let ratio = 1
     if(isMobile()){
@@ -33,6 +34,8 @@ export default (svg, inputWidth, inputHeight, playerData)=> {
             loadHorizontalPitch(svg,pitchWidth,centerX,centerY)
     }
     svg.call(loadPlayerData,playerData, ratio, centerX,centerY)
-    svg.call(playerDraw, playerData, ratio,centerX,centerY)
+    svg.call(playerDraw, playerData, ratio,centerX,centerY, menu)
+    svg.call(drawLine,ratio, lineData,centerX,centerY, menu)
+    svg.call(loadLineData, ratio, lineData,centerX,centerY)
 
 }

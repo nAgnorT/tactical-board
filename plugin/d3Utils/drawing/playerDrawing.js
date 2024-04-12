@@ -1,9 +1,10 @@
 import * as d3 from 'd3'
 import { translatePlayerPosition,swapDeviceX,swapDeviceY } from '../checking/translate'
-const playerDraw = (svg,playerData, ratio,centerX,centerY) => {
+const playerDraw = (svg,playerData, ratio,centerX,centerY, menu) => {
 
     svg.on("click", function(e){
-          let count = playerData.length +1
+          if (menu.drawingPlayer) {
+            let count = playerData.length +1
           let [baseX,baseY] = d3.pointer(e)
           const r = ratio * 1.5
           const player = svg.append('g').attr("data-id",count).attr("class","player").style("cursor", "pointer")
@@ -32,10 +33,11 @@ const playerDraw = (svg,playerData, ratio,centerX,centerY) => {
               .text(count);
           
             player.call(dragPlayer(playerData,centerX,centerY,ratio))
+          }
           
     })
 }
-const loadPlayerData = (svg, playerData, ratio, centerX,centerY) => {
+const loadPlayerData = (svg, playerData, ratio, centerX,centerY, menu) => {
   const r = 1.5*ratio
   for( let i = 0; i<playerData.length; i++) {
     const d = playerData[i]
