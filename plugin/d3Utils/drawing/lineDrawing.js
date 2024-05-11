@@ -1,12 +1,15 @@
 
 import { swapDeviceX, swapDeviceY, translatePlayerPosition } from "../checking/translate";
 import * as d3 from "d3"
-function drawLine(svg, ratio, lineData, centerX, centerY,menu){
+import { getLineData, saveLineData } from "../controller/data.controller";
+async function drawLine(svg, ratio,centerX, centerY,menu){
 
     // generate variables
     let startPoint, g, startX, startY, marker
     let drawing = false
+    let lineData = await getLineData()
     let count = lineData.length
+
 
     // event listeners on the svg
     svg.on("mouseup",(event) => {
@@ -47,7 +50,7 @@ function drawLine(svg, ratio, lineData, centerX, centerY,menu){
                         endY:secondY
                     }
                     lineData.push(linePoints)
-                    console.log(lineData)
+                    saveLineData(lineData)
     
                     // set variables to default
                         drawing = false
@@ -98,7 +101,8 @@ function drawLine(svg, ratio, lineData, centerX, centerY,menu){
 
     })
 }
-const loadLineData =  (svg, ratio, lineData,centerX,centerY) => {
+async function loadLineData (svg, ratio, centerX,centerY) {
+    let lineData = await getLineData()
     let marker = svg.append("g:defs").append("g:marker")
     .attr("id", "triangle")
     .attr("refX", 0)
@@ -166,11 +170,11 @@ const dragLine = (ratio,lineData,centerX,centerY) => {
         y1 = y1 + offSetY
         x2 = x2 + offSetX
         y2 = y2 + offSetY
-        console.log(id)
         lineData[id].startX = translatePlayerPosition(centerX,centerY,ratio,x1,y1)[0]
         lineData[id].startY = translatePlayerPosition(centerX,centerY,ratio,x1,y1)[1]
         lineData[id].endX=translatePlayerPosition(centerX,centerY,ratio,x2,y2)[0]
         lineData[id].endY= translatePlayerPosition(centerX,centerY,ratio,x2,y2)[1]
+        saveLineData(lineData)
         line.remove()
         g.append("line").attr('data-line-id',id+1)
         .attr("x1", x1)

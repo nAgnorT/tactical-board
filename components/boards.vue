@@ -3,9 +3,10 @@
 
     </div>
     <div class = "flex justify-center">
-  <button id="draw-player" x="10" y="10" width="100" height="30" class="svg-button" >Vẽ cầu thủ</button>
+  <button id="draw-home-player" x="10" y="10" width="100" height="30" class="svg-button" >Vẽ cầu thủ đội nhà</button>
+  <button id="draw-away-player" x="10" y="10" width="100" height="30" class="svg-button" >Vẽ cầu thủ đội khách</button>
   <button id="draw-line" x="10" y="10" width="100" height="30"class="svg-button">Vẽ đường thẳng</button>
-  <button id="save" x="10" y="10" width="100" height="30"class="svg-button">Lưu</button>
+  <button id="delete" x="10" y="10" width="100" height="30"class="svg-button">Xoa tat ca</button>
     </div>
 
   </template>
@@ -16,46 +17,77 @@ import { onMounted } from "vue";
 import d3Utils from "~/plugin/d3Utils";
 import interactDrag from "~/plugin/d3Utils/drawing/interactDrag";
 import interact from "interactjs"  
+import axios from "axios";
+import { saveAwayPlayerData, saveLineData,saveHomePlayerData } from "~/plugin/d3Utils/controller/data.controller";
   export default {
     name: 'Boards',
     setup() {
     onMounted(() => {
       const menu = {
         drawingLine: false,
-        drawingPlayer: false
+        drawingHomePlayer: false,
+        drawingAwayPlayer: false
       }
+
       const svg = d3.select("#svg-container").append('svg')
-      const playerDrawButton = document.getElementById('draw-player')
+      const homePlayerDrawButton = document.getElementById('draw-home-player')
+      const awayPlayerDrawButton = document.getElementById('draw-away-player')
       const lineDrawButton = document.getElementById('draw-line')
-      playerDrawButton.onclick = function toggleDrawPlayer() {
-        menu.drawingPlayer = !menu.drawingPlayer
+      const deleteButton = document.getElementById('delete')
+
+      homePlayerDrawButton.onclick = function toggleDrawPlayer() {
+        menu.drawingHomePlayer = !menu.drawingHomePlayer
         menu.drawingLine = false
-        const button1Text = menu.drawingPlayer ? "Dừng vẽ" : "Vẽ cầu thủ";
-        playerDrawButton.textContent = button1Text;
+        menu.drawingAwayPlayer = false
+        const button1Text = menu.drawingHomePlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội nhà";
+        homePlayerDrawButton.textContent = button1Text;
         const button2Text = menu.drawingLine ? "Dừng vẽ" : "Vẽ đường thẳng";
         lineDrawButton.textContent = button2Text;
-}
+        const button3Text = menu.drawingAwayPlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội khách";
+        awayPlayerDrawButton.textContent = button3Text;
+  }
+      awayPlayerDrawButton.onclick = function toggleDrawPlayer() {
+        menu.drawingAwayPlayer = !menu.drawingAwayPlayer
+        menu.drawingLine = false
+        menu.drawingHomePlayer = false
+        const button1Text = menu.drawingHomePlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội nhà";
+        homePlayerDrawButton.textContent = button1Text;
+        const button2Text = menu.drawingLine ? "Dừng vẽ" : "Vẽ đường thẳng";
+        lineDrawButton.textContent = button2Text;
+        const button3Text = menu.drawingAwayPlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội khách";
+        awayPlayerDrawButton.textContent = button3Text;
+  }
       lineDrawButton.onclick = function toggleDrawLine() {
         menu.drawingLine = !menu.drawingLine
-        menu.drawingPlayer = false
-        const button1Text = menu.drawingPlayer ? "Dừng vẽ" : "Vẽ cầu thủ";
-        playerDrawButton.textContent = button1Text;
+        menu.drawingHomePlayer = false
+        menu.drawingAwayPlayer = false
+        const button1Text = menu.drawingHomePlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội nhà";
+        homePlayerDrawButton.textContent = button1Text;
         const button2Text = menu.drawingLine ? "Dừng vẽ" : "Vẽ đường thẳng";
         lineDrawButton.textContent = button2Text;
-}
-      let playerData = []
-      let lineData =[]
-      function resize () {
+        const button3Text = menu.drawingHomePlayer ? "Dừng vẽ" : "Vẽ cầu thủ đội khách";
+        awayPlayerDrawButton.textContent = button3Text;
+  }
+      interactDrag('home-player')
+      interactDrag('away-player')
 
+      function resize () {
+        svg.selectAll("*").remove()
         const inputContainer = document.getElementById('svg-container')
         const inputWidth = inputContainer.offsetWidth
         const inputHeight = inputContainer.offsetHeight
-        d3Utils(svg, inputWidth,inputHeight,playerData,lineData, menu)
+        d3Utils(svg, inputWidth,inputHeight, menu)
+      }
+      deleteButton.onclick = function deleteData() {
+        const trong = []
+        saveAwayPlayerData(trong)
+        saveHomePlayerData(trong)
+        saveLineData(trong)
+        setTimeout(resize(), 500)
       }
       window.addEventListener("resize", resize);
-      interactDrag('player')
       resize()
-    });
+    })
   },
   }
   </script>

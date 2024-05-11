@@ -21,7 +21,6 @@ export default (name) => {
     
           // call this function on every dragend event
           end (event) {
-            console.log(event.x0)
           }
         }
       })

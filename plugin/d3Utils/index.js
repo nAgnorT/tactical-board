@@ -4,7 +4,7 @@ import isMobile from "./checking/isMobile"
 import { loadHorizontalPitch,loadVerticalPitch } from "./drawing/pitchDrawing"
 import { loadPlayerData, playerDraw } from "./drawing/playerDrawing"
 import { loadLineData,drawLine } from "./drawing/lineDrawing"
-export default (svg, inputWidth, inputHeight, playerData,lineData, menu)=> {
+export default (svg, inputWidth, inputHeight, menu)=> {
     let svgSize
 
     let svgWidth= 1,svgHeight= 1
@@ -19,7 +19,7 @@ export default (svg, inputWidth, inputHeight, playerData,lineData, menu)=> {
     svgHeight = svgSize.svgHeight
     const centerX = svgWidth/2
     const centerY = svgHeight / 2
-    svg.selectAll("*").remove()
+
     svg
           .attr("width", svgWidth)
           .attr("height", svgHeight)
@@ -33,9 +33,10 @@ export default (svg, inputWidth, inputHeight, playerData,lineData, menu)=> {
             ratio = pitchWidth/100
             loadHorizontalPitch(svg,pitchWidth,centerX,centerY)
     }
-    svg.call(loadPlayerData,playerData, ratio, centerX,centerY)
-    svg.call(playerDraw, playerData, ratio,centerX,centerY, menu)
-    svg.call(drawLine,ratio, lineData,centerX,centerY, menu)
-    svg.call(loadLineData, ratio, lineData,centerX,centerY)
+    svg.call(playerDraw, ratio, centerX, centerY,menu)
+
+    svg.call(loadPlayerData, ratio, centerX,centerY)
+    svg.call(drawLine,ratio, centerX,centerY, menu)
+    svg.call(loadLineData, ratio, centerX,centerY)
 
 }
